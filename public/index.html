@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./global.css" />
+    <link rel="shortcut icon" href="./assets/logo.svg" type="image/x-icon">
+    <title>AIMOne</title>
+  </head>
+  <body>
+    <div class="h-screen flex flex-col font-mono ">
+      <div id="masthead" class="min-h-[20%] bg-gradient-to-r from-red-700 via-red-600 to-white flex flex-row ">
+        <div class="flex-grow flex items-center ml-20 ">
+    <img src="./assets/logo.svg" alt="Logo">            
+            <p class="text-2xl font-bold text-white ml-3">
+                AIMOne - AIMK's common platform
+
+            </p>
+        </div>
+        <div class="flex items-center">
+            <form class="flex-row mx-5">
+                <label for="email_input" class="font-semibold text-indigo-800">Email:</label>
+                <input type="text" id="email_input" class="rounded-lg px-2  focus:outline-none text-sm text-stone-800" placeholder="Email">
+                <label for="password_input" class="font-semibold text-indigo-800">Password:</label>
+                <input type="text" id="password_input" class="rounded-lg px-2  focus:outline-none text-sm text-stone-800" placeholder="Password">
+                <input type="submit" value="Login" class="text-white px-3 py-1 rounded-lg cursor-pointer bg-red-800 font-extrabold">
+            </form>
+        </div>
+      </div>
+      <div id="body" class="flex-grow flex flex-row">
+        <div class="w-1/2 flex justify-center items-center">
+            <div class="w-[70%] h-[80%] bg-stone-50 rounded-lg flex flex-col">
+                <h3 class="m-5 font-semibold text-lg">Announcements </h3>
+                <ul class="mx-7 mb-5 overflow-y-scroll flex-grow text-sm list-inside list-disc flex flex-col gap-y-6 ">
+                    <li class="border-b-[1px] border-b-stone-500 px-2 ">sfasdfs</li>
+                    <li class="border-b-[1px] border-b-stone-500  px-2 ">sfasdfs</li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="flex flex-col w-1/2 justify-center ">
+            <div>
+
+                <img src="./assets/logo_big.png" alt="Logo_big" class="my-4">
+            </div>
+            <p class="text-6xl font-sans font-semibold mr-80">Welcome to <span class="text-red-700">Army Institute of</span><span class="text-indigo-800"> Management</span>, Kolkata</p>
+        </div>
+      </div>
+      <div id="footnote" class="min-h-[15%] bg-stone-100 flex flex-row font-sans">
+        <div class="flex flex-col my-2 px-5 border-r-2  "><p class="text-sm font-bold">Socials</p>
+        <ul class="list-inside m-3  ml-10  text-xs flex flex-col gap-1">
+            <li class="cursor-pointer">Facebook</li>
+            <li>Linkedin</li>
+            <li>Twitter</li>
+            <li>Youtube</li>
+            <li>Instagram</li>
+        </ul>
+        </div>
+        <div class="flex flex-col my-2 px-5 border-r-2">
+            <p class="text-sm font-bold">Contact</p>
+        <ul class="list-inside m-3  ml-10  text-xs flex flex-row gap-5">
+            <li>Admission Cell
+                Dr. Ayan Chattopadhyay
+                Contact No.: +91-9830898046</li>
+            <li>Dr. Abhishek Bhattacharjee
+                Contact No.: +91-7980010533
+                Email: admission_cell@aim.ac.in</li>
+            <li>Head Placement and Corporate Relations
+                Prof. Tamojit Ghosh Roy
+                Contact No.: +91 9819774744
+                Email: placement_cell@aim.ac.in</li>
+            
+        </ul>
+        </div>
+        <div class="flex m-5 items-center">
+            <p class="font-bold ">AIM One - One portal for AIMK</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
