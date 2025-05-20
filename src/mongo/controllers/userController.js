@@ -1,24 +1,27 @@
-const { UserModel } = require("../config/schema")
+const { UserModel } = require("../config/schema");
 
-//find instance 
-const findUser = (email)=>{
-    const user = UserModel.where("email").equals(email).select("name email");
+//find instance
+const findUser = async (email) => {
+  const user = await UserModel.where("email")
+    .equals(email)
+    .select("_id name email");
 
-    if(user) return user;
+  if (user && user != {}) return user[0];
 
-    return false;
-}
+  return false;
+};
 
 //check password
-const validateUserPwd = (email, password)=>{
+const validateUserPwd = async (email, password) => {
+  const password_org = await UserModel.where("email")
+    .equals(email)
+    .select("password");
 
-    const password_org = UserModel.where("email").equals(email).select("password");
+  //implement bcrypt decoding later here
 
-    //implement bcrypt decoding later here
+  if (password == password_org) return true;
 
-    if(password == password_org) return true;
+  return false;
+};
 
-    return false;
-}
-
-module.exports = {findUser, validateUserPwd};
+module.exports = { findUser, validateUserPwd };
