@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { UserModel } = require("../mongo/config/schema");
 
 const authMiddleware = async (req, res, next) => {
   const cookies = req.cookies;
@@ -21,6 +22,23 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
+
+const adminMiddleware = async (req,res,next) => {
+
+  
+
+  const user = jwt.verify(req.cookies.accessToken, process.env.SECRET_KEY);
+
+  let isAdmin;
+  await UserModel.find(user).select("role").then((user)=>{
+    isAdmin = user[0].role == 'admin';
+  })
+
+  isAdmin ?next() : res.send('not admin').end();
+
+}
+
+
 const validateAccessToken = async (accessToken) => {
   try {
     const user = jwt.verify(accessToken, process.env.SECRET_KEY);
@@ -32,4 +50,4 @@ const validateAccessToken = async (accessToken) => {
   }
 };
 
-module.exports = { authMiddleware };
+module.exports = { authMiddleware, adminMiddleware};

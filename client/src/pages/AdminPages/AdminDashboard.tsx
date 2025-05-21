@@ -1,12 +1,16 @@
 import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import {  useState } from "react";
+
+//todo implement a sidebar , and different views
+
 
 export default () => {
   const [searchQueryList, setSearchQueryList] = useState<[Object] | []>([]);
-  const [selectedUser, setSelectedUser] = useState<{ name: string; regno: string }>();
+  const [selectedUser, setSelectedUser] = useState<{name : string , regno : string}>();
   const [timetable, setTimeTable] = useState<
     [[{ course_code: string; course_title: string }]] | []
   >([]);
+
 
   const days = [
     "Sunday",
@@ -36,13 +40,13 @@ export default () => {
 
   const searchQueryHandler = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.currentTarget.value === "") {
+    if (e.currentTarget.value == "") {
       setSearchQueryList([]);
       return;
     }
 
     axios
-      .get("http://localhost:3001/api/user_util/findUsersByRegNo", {
+      .get("http://localhost:3001/api/admin/user_util/findUsersByRegNo", {
         params: {
           searchQuery: e.currentTarget.value,
         },
@@ -52,17 +56,28 @@ export default () => {
       });
   };
 
+  //get  timetable
   const fetchTimetable = (user: { name: string; regno: string }) => {
     axios
-      .get("http://localhost:3001/api/user_util/getTimetableByRegNo", {
+      .get("http://localhost:3001/api/admin/user_util/getTimetableByRegNo", {
         params: {
           regno: user.regno,
         },
       })
       .then((res) => {
-        setTimeTable(res.data);
+        setTimeTable(res.data)
       });
   };
+  //set timetable
+  const handleTimetableUpdate = ()=>{
+    console.log(timetable);
+
+    axios.post("http://localhost:3001/api/admin/user_util/setTimetableByRegNo" ,{
+     timetable
+    },{
+      params : {regno : selectedUser?.regno}
+    })
+  }
 
   return (
     <>
@@ -96,25 +111,43 @@ export default () => {
               {Array.from({ length: periods }).map((_, periodIndex) => (
                 <tr key={periodIndex}>
                   <td>{formatTime(periodIndex)}</td>
-                  {days.map((day, dayIndex) => (
+                  {days.map((day,dayIndex) => (
                     <td key={`${dayIndex}.${day}`}>
-                      <div>
-                        <b>
-                          {timetable.length === 0
+                      <input
+                        type="text"
+                        placeholder="Course Code"
+                        defaultValue={
+                          timetable.length == 0
                             ? ""
-                            : timetable[dayIndex][periodIndex].course_code}
-                        </b>
-                        <br />
-                        {timetable.length === 0
-                          ? ""
-                          : timetable[dayIndex][periodIndex].course_title}
-                      </div>
+                            : timetable[dayIndex][periodIndex].course_code
+                        }
+                        onChange={(e) => {
+                          console.log(timetable);
+                          timetable[dayIndex][periodIndex].course_code =
+                            e.currentTarget.value;
+                        }}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Course Title"
+                        defaultValue={
+                          timetable.length == 0
+                            ? ""
+                            : timetable[dayIndex][periodIndex].course_title
+                        }
+                        onChange={(e) => {
+                          timetable[dayIndex][periodIndex].course_title =
+                            e.currentTarget.value;
+                        }}
+                      />
+                      <br />
                     </td>
                   ))}
                 </tr>
               ))}
             </tbody>
           </table>
+          <button className="bg-black text-white" onClick={handleTimetableUpdate}>Update Timetable</button>
         </>
       )}
     </>

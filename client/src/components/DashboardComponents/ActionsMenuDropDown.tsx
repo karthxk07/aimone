@@ -15,6 +15,7 @@ export default () => {
       <div className="absolute top-full -end-3.5">
         <div className="m-2 bg-stone-100 text-base rounded-lg py-1  ">
           <ul>
+            <li><a href="/admin/dashboard">Admin</a></li>
             <li className="flex flex-row items-center cursor-pointer m-1 mx-5">
               <FaUserEdit />
               &nbsp;Profile

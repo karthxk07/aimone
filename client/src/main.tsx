@@ -4,6 +4,7 @@ import "./index.css";
 import Dashboard from "./pages/Dashboard.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import App from "./App.tsx";
+import AdminDashboard from "./pages/AdminPages/AdminDashboard.tsx";
 
 const router = createBrowserRouter([
   {
@@ -11,13 +12,22 @@ const router = createBrowserRouter([
     Component: App,
   },
   {
-    path: "/dashboard",
+    path: "dashboard",
     Component: Dashboard,
   },
   {
-    path: "/login",
+    path: "login",
     Component: LoginPage,
   },
+  {
+    path:"admin",
+    children : [
+      {
+        path : "dashboard",
+        Component : AdminDashboard
+      }
+    ]
+  }
 ]);
 
 createRoot(document.getElementById("root")!).render(

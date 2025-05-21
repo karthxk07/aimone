@@ -12,6 +12,7 @@ import Announcement from "../types/types";
 
 
 export default () => {
+  //todo add announcement menu item
   const [selectedView, setSelectedView] = useState<MenuItems>();
   const [isActionsMenuHovered, setActionsMenuHovered] =
     useState<boolean>(false);
