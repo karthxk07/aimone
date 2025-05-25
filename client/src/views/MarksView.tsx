@@ -1,9 +1,9 @@
-import axios, { AxiosResponse } from "axios";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+//todo implement a sidebar , and different views
 
 export default () => {
-  const [searchQueryList, setSearchQueryList] = useState<[Object] | []>([]);
-  const [selectedUser, setSelectedUser] = useState<{ name: string; regno: string }>();
   const [timetable, setTimeTable] = useState<
     [[{ course_code: string; course_title: string }]] | []
   >([]);
@@ -34,54 +34,22 @@ export default () => {
     return `${pad(startH)}:${pad(startM)} - ${pad(endH)}:${pad(endM)}`;
   };
 
-  const searchQueryHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.currentTarget.value === "") {
-      setSearchQueryList([]);
-      return;
-    }
-
+  //get  timetable
+  const fetchTimetable = () => {
     axios
-      .get("http://localhost:3001/api/user_util/findUsersByRegNo", {
-        params: {
-          searchQuery: e.currentTarget.value,
-        },
-      })
-      .then((res: AxiosResponse<any, any>) => {
-        setSearchQueryList(res.data);
-      });
-  };
-
-  const fetchTimetable = (user: { name: string; regno: string }) => {
-    axios
-      .get("http://localhost:3001/api/user_util/getTimetableByRegNo", {
-        params: {
-          regno: user.regno,
-        },
-      })
+      .get("http://localhost:3001/api/user_util/getTimetable")
       .then((res) => {
-        setTimeTable(res.data);
+        setTimeTable(res.data.timetable);
       });
   };
+
+  useEffect(() => {
+    fetchTimetable();
+  }, []);
 
   return (
     <>
-      <input type="text" onChange={searchQueryHandler} className="text-black" />
-      <ul>
-        {searchQueryList?.map((user, idx) => (
-          <li
-            key={idx}
-            onClick={() => {
-              setSelectedUser(user as { name: string; regno: string });
-              fetchTimetable(user as { name: string; regno: string });
-            }}
-          >
-            <b>{(user as { name: string; regno: string }).regno}</b>{" "}
-            {(user as { name: string; regno: string }).name}
-          </li>
-        ))}
-      </ul>
-      {selectedUser && (
+      {timetable.length != 0 && (
         <>
           <table style={{ borderCollapse: "collapse", width: "100%" }}>
             <thead>
@@ -98,17 +66,9 @@ export default () => {
                   <td>{formatTime(periodIndex)}</td>
                   {days.map((day, dayIndex) => (
                     <td key={`${dayIndex}.${day}`}>
-                      <div>
-                        <b>
-                          {timetable.length === 0
-                            ? ""
-                            : timetable[dayIndex][periodIndex].course_code}
-                        </b>
-                        <br />
-                        {timetable.length === 0
-                          ? ""
-                          : timetable[dayIndex][periodIndex].course_title}
-                      </div>
+                      <p>{timetable[dayIndex][periodIndex].course_code}</p>
+                      <p>{timetable[dayIndex][periodIndex].course_title}</p>
+                      <br />
                     </td>
                   ))}
                 </tr>

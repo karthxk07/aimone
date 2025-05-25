@@ -9,6 +9,7 @@ const { connectDb } = require("./src/mongo/db");
 const authRouter = require("./src/routes/auth");
 const {authMiddleware, adminMiddleware } = require("./src/middlewares/authMiddleware");
 const adminUserUtilRouter = require("./src/routes/admin/adminUserUtils");
+const userUtilRouter = require("./src/routes/userUtils");
 
 //middleware function
 app.use(cors());
@@ -19,6 +20,8 @@ app.use(cookieParser());
 //api routes
 app.use("/api/auth", authRouter);
 app.use("/api/admin/user_util", adminUserUtilRouter);
+app.use("/api/user_util/", userUtilRouter);
+
 
 
 //init function

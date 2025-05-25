@@ -50,4 +50,4 @@ const validateAccessToken = async (accessToken) => {
   }
 };
 
-module.exports = { authMiddleware, adminMiddleware};
+module.exports = { authMiddleware, adminMiddleware , validateAccessToken};
