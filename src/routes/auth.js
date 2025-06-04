@@ -37,45 +37,43 @@ authRouter.get("/signout", (req, res) => {
   res.end();
 });
 
-
 authRouter.post("/signup", async (req, res) => {
   const { regno, name, email, password } = req.body;
 
-  try {const user = new UserModel({
-    name,
-    regno,
-    email,
-    password
-  })
+  try {
+    const user = new UserModel({
+      name,
+      regno,
+      email,
+      password,
+    });
 
-  await user.save();
+    await user.save();
 
-
-  res.cookie(
-    "accessToken",
-    jwt.sign(JSON.stringify(user), process.env.SECRET_KEY),
-    {
-      httpOnly: true,
-      secure: true,
-    }
-  );
-  res.end();
-}catch(e){
-  res.status(400).send(e).end();
-}
-
+    res.cookie(
+      "accessToken",
+      jwt.sign(JSON.stringify(user), process.env.SECRET_KEY),
+      {
+        httpOnly: true,
+        secure: true,
+      }
+    );
+    res.end();
+  } catch (e) {
+    res.status(400).send(e).end();
+  }
 
   //todo : implement referesh token
   //todo : implement bcrypt
 });
 
-
-
 //check if isAdmin
-authRouter.get("/isAdmin", (req, res) => {
+authRouter.get("/isAdmin", async (req, res) => {
   const user = jwt.verify(req.cookies.accessToken, process.env.SECRET_KEY);
 
-  if (UserModel.find(user).select("role") == "admin") {
+  const role = await UserModel.findOne(user).select("role");
+
+  if (role.role == "admin") {
     res.status(200).send("admin").end();
   } else {
     res.status(400).send("not admin").end();

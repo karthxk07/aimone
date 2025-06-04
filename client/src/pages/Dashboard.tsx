@@ -9,11 +9,41 @@ import { FaScroll, FaUser } from "react-icons/fa";
 import ActionsMenuDropDown from "../components/DashboardComponents/ActionsMenuDropDown";
 import Announcement from "../types/types";
 
+//replace with api call
+let announcements: Announcement[] = [
+  {
+    text: "**[Important]** Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    link: undefined,
+  },
+];
 
+const AnnouncementView = (): React.ReactNode => {
+  console.log("dsfs");
+  return (
+    <div className="flex flex-col w-full">
+      <div className="flex flex-row items-center gap-1 text-2xl">
+        <FaScroll /> <p>Announcements</p>
+      </div>
+      {/* Implement fetching announcements */}
+      <div className="m-3">
+        {" "}
+        <ul className="ml-8 list-disc">
+          {announcements.map((announcement: Announcement, idx: number) => (
+            <li key={idx} className="bg-stone-50 p-3 rounded-2xl ">
+              <a href={announcement.link}>
+                <ReactMarkdown>{announcement.text}</ReactMarkdown>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 export default () => {
   //todo add announcement menu item
-  const [selectedView, setSelectedView] = useState<MenuItems>();
+  const [selectedView, setSelectedView] = useState<MenuItems>(0);
   const [isActionsMenuHovered, setActionsMenuHovered] =
     useState<boolean>(false);
 
@@ -26,16 +56,10 @@ export default () => {
         return <TimeTableView />;
       case MenuItems.MARKS:
         return <MarksView />;
+      default:
+        return <AnnouncementView />;
     }
   };
-
-  //replace with api call
-  let announcements: Announcement[] = [
-    {
-      text: "**[Important]** Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      link: undefined,
-    },
-  ];
 
   return (
     <>
@@ -57,39 +81,14 @@ export default () => {
             }}
           >
             <FaUser />
-            {isActionsMenuHovered && <ActionsMenuDropDown /> }
+            {isActionsMenuHovered && <ActionsMenuDropDown />}
           </div>
         </div>
         <div className="flex-grow flex flex-row ">
-          <div id="sidebar" className="bg-stone-300 ">
+          <div id="sidebar" className="bg-stone-100  ">
             <Sidebar currentMenuStateHandler={setSelectedView} />
           </div>
-          <div className="flex flex-grow font-sans p-5">
-            {selectedView ? (
-              renderView()
-            ) : (
-              <div className="flex flex-col w-full">
-                <div className="flex flex-row items-center gap-1 text-2xl">
-                  <FaScroll /> <p>Announcements</p>
-                </div>
-                {/* Implement fetching announcements */}
-                <div className="m-3">
-                  {" "}
-                  <ul className="ml-8 list-disc">
-                    {announcements.map(
-                      (announcement: Announcement, idx: number) => (
-                        <li key={idx} className="bg-stone-50 p-3 rounded-2xl ">
-                          <a href={announcement.link}>
-                            <ReactMarkdown>{announcement.text}</ReactMarkdown>
-                          </a>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
+          <div className="flex flex-grow font-sans p-5">{renderView()}</div>
         </div>
       </div>
     </>

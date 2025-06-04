@@ -12,7 +12,7 @@ const adminUserUtilRouter = require("./src/routes/admin/adminUserUtils");
 const userUtilRouter = require("./src/routes/userUtils");
 
 //middleware function
-app.use(cors());
+app.use(cors({origin : ["http://localhost:5173"]}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
