@@ -10,6 +10,9 @@ const authRouter = require("./src/routes/auth");
 const {authMiddleware, adminMiddleware } = require("./src/middlewares/authMiddleware");
 const adminUserUtilRouter = require("./src/routes/admin/adminUserUtils");
 const userUtilRouter = require("./src/routes/userUtils");
+const courseRouter = require("./src/routes/admin/course");
+const facultyRouter = require("./src/routes/admin/faculty");
+
 
 //middleware function
 app.use(cors({origin : ["http://localhost:5173"]}));
@@ -21,8 +24,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/admin/user_util", adminUserUtilRouter);
 app.use("/api/user_util/", userUtilRouter);
-
-
+app.use("/api/course",courseRouter);
+app.use("/api/faculty", facultyRouter);
 
 //init function
 connectDb(); //connect to mongodb -> func in ./src/mongo.db

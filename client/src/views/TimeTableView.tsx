@@ -43,7 +43,7 @@ export default function Timetable() {
   };
 
   return timetable.length ? (
-    <div className="overflow-x-auto m-10">
+    <div className="overflow-x-auto w-full ">
       <table className="table-auto w-full border border-black text-center">
         <thead>
           <tr className="bg-gray-200">
