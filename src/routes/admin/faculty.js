@@ -56,5 +56,14 @@ facultyRouter.post('/signup', async(req,res)=>{
 
 
 
+//getting all participants of the group
+
+//updating marks -> marks entry in the course of a particular student
+//make a mark entry with title and marks
+//make/update a mark model with the id of the participant
+//add this mark model to the marks field in the course
+
+//updating attendence off the student in the course
+//similar to the marks
 
 module.exports = facultyRouter;

@@ -3,7 +3,6 @@ const courseRouter = express.Router();
 const { CourseModel, FacultyModel } = require("../../mongo/config/schema");
 const { adminMiddleware } = require("../../middlewares/authMiddleware");
 
-
 courseRouter.use(adminMiddleware);
 
 //make a course and assign a course id using a function
@@ -23,9 +22,13 @@ courseRouter.post("/add", async (req, res) => {
   try {
     //find faculty from the emp id
     const faculty = await FacultyModel.findOne({ emp_id: emp_id });
-    
+
+    //generate a class number
+    const class_no = "CH" + Date.now().toString(); //timestamp
+
     //make a new course with the following details
     const course = CourseModel({
+      class_no: class_no,
       course_no: course_no,
       course_title: course_title,
       faculty: faculty._id,
@@ -39,7 +42,27 @@ courseRouter.post("/add", async (req, res) => {
   }
 });
 
-//getting all course
+//getting all courses
+courseRouter.get("/allCourses", async (req, res) => {
+  try {
+    const courses = await CourseModel.find();
+    res.send(courses).end();
+  } catch (e) {
+    res.send("some error occured " + e.message).end();
+  }
+});
+
+//find course by class no
+courseRouter.get("/getCourseByClassNo", async (req, res) => {
+  const { class_no } = req.params;
+
+  try {
+    const course = await CourseModel.findOne({ class_no: class_no });
+    res.send(course).end();
+  } catch (e) {
+    res.send("some error occured " + e.message).end();
+  }
+});
 
 //adding participants in the course
 // select participant using the dept
@@ -48,14 +71,5 @@ courseRouter.post("/add", async (req, res) => {
 
 //updating faculty in the course
 
-//getting all participants of the group
-
-//updating marks -> marks entry in the course of a particular student
-//make a mark entry with title and marks
-//make/update a mark model with the id of the participant
-//add this mark model to the marks field in the course
-
-//updating attendence off the student in the course
-//similar to the marks
 
 module.exports = courseRouter;

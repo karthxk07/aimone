@@ -18,9 +18,11 @@ const UserSchema = new mongoose.Schema({
 const UserModel = mongoose.model("User", UserSchema);
 
 //course schema
-const CourseSchema = new mongoose.Schema({//implement course id later, func to generate course id
+const CourseSchema = new mongoose.Schema({
+  class_no: {type:String,unique:true}, // Unique Id indentifing a particular class 
   course_no: String,
   course_title: String,
+  year : {type:Number, default : ()=> new Date().getFullYear()},
   faculty: { type: mongoose.Schema.Types.ObjectId, ref: "faculties" },
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
   marks: [{ type: mongoose.Schema.Types.ObjectId, ref: "marks" }],
