@@ -67,17 +67,5 @@ authRouter.post("/signup", async (req, res) => {
   //todo : implement bcrypt
 });
 
-//check if isAdmin
-authRouter.get("/isAdmin", async (req, res) => {
-  const user = jwt.verify(req.cookies.accessToken, process.env.SECRET_KEY);
-
-  const role = await UserModel.findOne(user).select("role");
-
-  if (role.role == "admin") {
-    res.status(200).send("admin").end();
-  } else {
-    res.status(400).send("not admin").end();
-  }
-});
 
 module.exports = authRouter;

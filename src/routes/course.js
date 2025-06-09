@@ -73,36 +73,62 @@ courseRouter.get("/getCourseByClassNo", async (req, res) => {
 // select participant using the dept -> user list sent in the request
 // add course to the participants also
 courseRouter.post("/addParticipants", async (req, res) => {
-  const { users, class_no } = req.body;
-
+  
   try {
-    // check the slot of all the participants and if the slot clashes then return a error
+    const { users, class_no } = req.body; //send the reg nos and class_no of the course
+    
+    //check if list of users is valid
+    for(let regno of users){
+    }
 
+
+    // check the slot of all the participants and if the slot clashes then return a error
     const course = await CourseModel.findOne({ class_no: class_no });
     if (!course) return res.send("invalid class no").end();
 
     const slot = course.slot;
 
     // add a check to not allow confliting slots
-    for (let user_id of users) {
-      const user = await UserModel.findOne({ _id: user_id })
-        .select("courses")
-        .populate({ path: "courses", select: "slot" });
+    for (let regno of users) {
+
+      const user = await UserModel.findOne({regno:regno})
+      .populate({ path: "courses", select: "slot" });;
+      
+      //check if user valid
+      if(!user) return res.send("invalid list of user").end();
+
 
       //user.courses for each course.slot
-      //from this check with the slot, course.slot == slot , return err if true
-      // also return the list of users
+      let err_users = []; //list of users with confilicting slots
+      for (let course of user.courses) {
+        //from this check with the slot, course.slot == slot
+        if (course.slot == slot) err_users.push(user._id);
+      }
 
-        res.end();
+      // return err if true
+      // also return the list of users
+      if (err_users.length > 0)
+        return res.send("conflicting slots" + err_users).end();
+
+      //adding
+      err_users = [];
+      if (!course.participants.includes(user._id)) {
+        //user not a participatn
+        //add participant to the course
+        course.participants.push(user._id);
+        await course.save();
+        user.courses.push(course._id);
+      } else {
+        err_users.push(regno);
+      }
+
+      if (err_users.length > 0)
+        return res.send("conflicting slots" + err_users).end();
+  
     }
 
-    //add participants to the course
-    // if program has reached here then there are no errors 
-
-
-    //add course to the partcipants
-
-    
+   
+    res.send("participants added successfully"),end();
   } catch (e) {
     res.send("some error ocurred" + e.message).end();
   }

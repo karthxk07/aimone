@@ -3,6 +3,8 @@ import Announcement from "../types/types";
 import ReactMarkdown from "react-markdown";
 import { FaBullseye } from "react-icons/fa";
 
+//add different login for faculty and student , and on faculty login check if the faculty is admin or academic and then accordingly show the dashboard
+
 function LoginPage() {
   const loginHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
