@@ -9,9 +9,9 @@ const { connectDb } = require("./src/mongo/db");
 const authRouter = require("./src/routes/auth");
 const {authMiddleware, adminMiddleware } = require("./src/middlewares/authMiddleware");
 const adminUserUtilRouter = require("./src/routes/admin/adminUserUtils");
-const userUtilRouter = require("./src/routes/userUtils");
-const courseRouter = require("./src/routes/admin/course");
-const facultyRouter = require("./src/routes/admin/faculty");
+const userRouter = require("./src/routes/user");
+const courseRouter = require("./src/routes/course");
+const facultyRouter = require("./src/routes/faculty");
 
 
 //middleware function
@@ -23,7 +23,7 @@ app.use(cookieParser());
 //api routes
 app.use("/api/auth", authRouter);
 app.use("/api/admin/user_util", adminUserUtilRouter);
-app.use("/api/user_util/", userUtilRouter);
+app.use("/api/user/", userRouter);
 app.use("/api/course",courseRouter);
 app.use("/api/faculty", facultyRouter);
 

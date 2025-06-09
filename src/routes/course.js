@@ -1,7 +1,12 @@
 const express = require("express");
 const courseRouter = express.Router();
-const { CourseModel, FacultyModel } = require("../../mongo/config/schema");
-const { adminMiddleware } = require("../../middlewares/authMiddleware");
+const {
+  CourseModel,
+  FacultyModel,
+  UserModel,
+} = require("../mongo/config/schema");
+const { adminMiddleware } = require("../middlewares/authMiddleware");
+const { randomInt } = require("crypto");
 
 courseRouter.use(adminMiddleware);
 
@@ -16,10 +21,10 @@ courseRouter.use(adminMiddleware);
 
 //add a course and automatically set its course id
 courseRouter.post("/add", async (req, res) => {
-  //get the course no, course title and the faculty name
-  const { course_no, course_title, emp_id, slot } = req.body;
-
   try {
+    //get the course no, course title and the faculty name
+    const { course_no, course_title, emp_id, slot } = req.body;
+
     //find faculty from the emp id
     const faculty = await FacultyModel.findOne({ emp_id: emp_id });
 
@@ -65,11 +70,44 @@ courseRouter.get("/getCourseByClassNo", async (req, res) => {
 });
 
 //adding participants in the course
-// select participant using the dept
-// add a check to not allow confliting slots
-// check the slot of all the participants and if the slot clashes then return a error
+// select participant using the dept -> user list sent in the request
+// add course to the participants also
+courseRouter.post("/addParticipants", async (req, res) => {
+  const { users, class_no } = req.body;
+
+  try {
+    // check the slot of all the participants and if the slot clashes then return a error
+
+    const course = await CourseModel.findOne({ class_no: class_no });
+    if (!course) return res.send("invalid class no").end();
+
+    const slot = course.slot;
+
+    // add a check to not allow confliting slots
+    for (let user_id of users) {
+      const user = await UserModel.findOne({ _id: user_id })
+        .select("courses")
+        .populate({ path: "courses", select: "slot" });
+
+      //user.courses for each course.slot
+      //from this check with the slot, course.slot == slot , return err if true
+      // also return the list of users
+
+        res.end();
+    }
+
+    //add participants to the course
+    // if program has reached here then there are no errors 
+
+
+    //add course to the partcipants
+
+    
+  } catch (e) {
+    res.send("some error ocurred" + e.message).end();
+  }
+});
 
 //updating faculty in the course
-
 
 module.exports = courseRouter;

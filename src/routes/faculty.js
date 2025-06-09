@@ -1,5 +1,5 @@
 const express = require("express");
-const { FacultyModel } = require("../../mongo/config/schema");
+const { FacultyModel } = require("../mongo/config/schema");
 const facultyRouter = express.Router();
 const jwt = require("jsonwebtoken");
 

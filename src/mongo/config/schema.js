@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   courses: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "courses",
+      ref: "Course",
     },
   ],
   dept: { type: String },
@@ -23,10 +23,10 @@ const CourseSchema = new mongoose.Schema({
   course_no: String,
   course_title: String,
   year : {type:Number, default : ()=> new Date().getFullYear()},
-  faculty: { type: mongoose.Schema.Types.ObjectId, ref: "faculties" },
-  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "users" }],
-  marks: [{ type: mongoose.Schema.Types.ObjectId, ref: "marks" }],
-  attendence: [{ type: mongoose.Schema.Types.ObjectId, ref: "attendence" }],
+  faculty: { type: mongoose.Schema.Types.ObjectId, ref: "Faculty" },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  marks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Mark" }],
+  attendence: [{ type: mongoose.Schema.Types.ObjectId, ref: "Attendence" }],
   slot: {
     type: String,
     enums: [
@@ -100,9 +100,9 @@ const CourseModel = mongoose.model("Course", CourseSchema);
 
 //attendence schema
 const AttendenceSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   attendence: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "attendenceentry" },
+    { type: mongoose.Schema.Types.ObjectId, ref: "AttendanceEntry" },
   ],
 });
 const AttendenceModel = mongoose.model("Attendence", AttendenceSchema);
@@ -119,8 +119,8 @@ const AttendenceEntryModel = mongoose.model(
 
 // mark schema
 const MarkSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
-  mark: [{ type: mongoose.Schema.Types.ObjectId, ref: "markentries" }],
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  mark: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarkEntry" }],
 });
 const MarkModel = mongoose.model("Mark", MarkSchema);
 
@@ -141,7 +141,7 @@ const FacultySchema = new mongoose.Schema({
   courses: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "courses",
+      ref: "Course",
     },
   ],
 });
