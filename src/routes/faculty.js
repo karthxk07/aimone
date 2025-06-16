@@ -1,5 +1,11 @@
 const express = require("express");
-const { FacultyModel, CourseModel } = require("../mongo/config/schema");
+const {
+  FacultyModel,
+  CourseModel,
+  UserModel,
+  MarkEntryModel,
+  MarkModel,
+} = require("../mongo/config/schema");
 const facultyRouter = express.Router();
 const jwt = require("jsonwebtoken");
 
@@ -85,13 +91,58 @@ facultyRouter.get("/participants", async (req, res) => {
   }
 });
 
-//archiving a course
+//todo : archiving a course
 //roll out with slow updates
 
 //updating marks -> marks entry in the course of a particular student
 //make a mark entry with title and marks
 //make/update a mark model with the id of the participant
 //add this mark model to the marks field in the course
+facultyRouter.post("/mark", async (req, res) => {
+  try {
+    //get the course , user id and mark entry{title, score}
+
+    const { class_no, regno, mark_title, mark_score } = req.body;
+
+    //check if the class_no is correct
+    const course = await CourseModel.findOne({ class_no: class_no });
+    if (!course) return res.send("course not found").end();
+
+    //check if regno is correct
+    const user = await UserModel.findOne({ regno: regno });
+    if (!user) return res.send("user not found").end();
+
+
+    //check if regno is a participant in the course
+    if(!course.participants.includes(user._id)) return res.send("not a participant").end();
+
+    //check if mark_title and mark_score have correct types
+    if (typeof mark_title != String && typeof mark_score != number)
+      return res.send("not a correct entry").end();
+
+    //make a mark entry with the title and the score
+    const mark_entry = new MarkEntryModel({
+      entry_label : mark_title,
+      entry_score : mark_score
+    })
+    await mark_entry.save();
+
+    // assign mark to the particular user_id
+    const mark = new MarkModel({
+      user_id : user._id,
+      mark : mark_entry._id
+    })
+    await mark.save();
+
+    //add mark to the course
+    course.marks.push(mark._id);
+    await course.save();
+
+    res.send("mark added successfully").end();
+  } catch (e) {
+    res.send("some error occured : " + e.message).end();
+  }
+});
 
 //updating attendence off the student in the course
 //similar to the marks

@@ -1,0 +1,13 @@
+## getting participants
+check if a user that is not a participant can get the participants of the course 
+check if a faculty who is not the faculty of the course can get teh participants of the course
+check if admin can get participants of any course
+
+
+## adding marks 
+add marks normally
+check with wrong class no
+check with wrong regno
+check with mark_score as a string
+check with regno not a participant in course
+

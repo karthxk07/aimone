@@ -148,4 +148,4 @@ const FacultySchema = new mongoose.Schema({
 const FacultyModel = mongoose.model("Faculty", FacultySchema);
 
 //exporting all models
-module.exports = { UserModel, CourseModel, FacultyModel };
+module.exports = { UserModel, CourseModel, FacultyModel, MarkModel, MarkEntryModel, AttendenceModel, AttendenceEntryModel };
