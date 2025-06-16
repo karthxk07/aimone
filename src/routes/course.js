@@ -6,9 +6,8 @@ const {
   UserModel,
 } = require("../mongo/config/schema");
 const { adminMiddleware } = require("../middlewares/authMiddleware");
-const { randomInt } = require("crypto");
-
 courseRouter.use(adminMiddleware);
+const jwt = require('jsonwebtoken')
 
 //make a course and assign a course id using a function
 // the course willl be created by the admin
@@ -134,6 +133,18 @@ courseRouter.post("/addParticipants", async (req, res) => {
   }
 });
 
+courseRouter.get("/participants", async (req,res)=>{
+  try{
+    //get the class_no from query and the course from the class_no
+    const {class_no} = req.query;
+    const course = await CourseModel.findOne({class_no : class_no});
+
+    res.send(course.participants).end();
+  }catch(e){
+    res.send("some error occured" + e.message).end();
+  }
+})
 //updating faculty in the course
+// roll out with slow update
 
 module.exports = courseRouter;
