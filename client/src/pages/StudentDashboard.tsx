@@ -1,13 +1,13 @@
 import { ReactNode, useState } from "react";
-import { MenuItems } from "../enums/MenuItems";
-import TimeTableView from "../views/TimeTableView";
-import AttendenceView from "../views/AttendenceView";
-import MarksView from "../views/MarksView";
+import TimeTableView from "../views/StudentViews/TimeTableView";
+import AttendenceView from "../views/StudentViews/AttendenceView";
+import MarksView from "../views/StudentViews/MarksView";
 import ReactMarkdown from "react-markdown";
-import Sidebar from "../components/DashboardComponents/Sidebar";
+import Sidebar from "../components/StudentDashboardComponents/Sidebar";
 import { FaScroll, FaUser } from "react-icons/fa";
-import ActionsMenuDropDown from "../components/DashboardComponents/ActionsMenuDropDown";
+import ActionsMenuDropDown from "../components/StudentDashboardComponents/ActionsMenuDropDown";
 import Announcement from "../types/types";
+import { MenuItems } from "../enums";
 
 //replace with api call
 let announcements: Announcement[] = [

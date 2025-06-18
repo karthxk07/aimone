@@ -137,7 +137,7 @@ courseRouter.get("/participants", async (req,res)=>{
   try{
     //get the class_no from query and the course from the class_no
     const {class_no} = req.query;
-    const course = await CourseModel.findOne({class_no : class_no});
+    const course = await CourseModel.findOne({class_no : class_no}).select("participants");
 
     res.send(course.participants).end();
   }catch(e){

@@ -8,6 +8,7 @@ const {
 } = require("../mongo/config/schema");
 const facultyRouter = express.Router();
 const jwt = require("jsonwebtoken");
+const { types } = require("util");
 
 //add a faculty
 facultyRouter.post("/login", async (req, res) => {
@@ -117,7 +118,7 @@ facultyRouter.post("/mark", async (req, res) => {
     if(!course.participants.includes(user._id)) return res.send("not a participant").end();
 
     //check if mark_title and mark_score have correct types
-    if (typeof mark_title != String && typeof mark_score != number)
+    if (typeof(mark_title) != "string" && typeof(mark_score) != "number")
       return res.send("not a correct entry").end();
 
     //make a mark entry with the title and the score

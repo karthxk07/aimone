@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
-import Dashboard from "./pages/Dashboard.tsx";
+import Dashboard from "./pages/StudentDashboard.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import App from "./App.tsx";
-import AdminDashboard from "./pages/AdminPages/AdminDashboard.tsx";
+import AdminDashboard from "./pages/AdminDashboard.tsx";
 
 const router = createBrowserRouter([
   {

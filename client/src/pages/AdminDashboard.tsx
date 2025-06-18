@@ -1,14 +1,11 @@
 import { useState } from "react";
-import Sidebar from "../../components/AdminDashboardComponents/Sidebar";
-import UpdateTimetable from "./UpdateTimetable";
+import Sidebar from "../components/AdminDashboardComponents/Sidebar";
+import UpdateTimetable from "../views/AdminViews/UpdateTimetable";
+import { AdminMenuItems } from "../enums";
 
-export enum AdminMenuItems {
-  UPDATE_TIMETABLE,
-  
-}
 
 export default () => {
-  const [selectedView, setSelectedView] = useState<AdminMenuItems>(0);
+  const [selectedView, setSelectedView] = useState<AdminMenuItems>(AdminMenuItems.UPDATE_TIMETABLE);
 
   const renderView = (): React.ReactNode => {
     switch (selectedView) {

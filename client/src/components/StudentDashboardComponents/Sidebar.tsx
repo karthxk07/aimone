@@ -1,8 +1,8 @@
 import { FaTable } from "react-icons/fa";
 import { SiGoogleclassroom } from "react-icons/si";
 import { GoNumber } from "react-icons/go";
-import { MenuItems } from "../../enums/MenuItems";
 import { FaScroll } from "react-icons/fa6";
+import { MenuItems } from "../../enums";
 
 const MenuItemsList = [
   { itemIcon: <FaScroll />, itemName: "Announcements" },
