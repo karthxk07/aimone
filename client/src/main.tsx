@@ -25,7 +25,8 @@ const router = createBrowserRouter([
       {
         path : "dashboard",
         Component : AdminDashboard
-      }
+      },
+      
     ]
   }
 ]);

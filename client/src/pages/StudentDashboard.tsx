@@ -18,7 +18,6 @@ let announcements: Announcement[] = [
 ];
 
 const AnnouncementView = (): React.ReactNode => {
-  console.log("dsfs");
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-row items-center gap-1 text-2xl">
@@ -64,6 +63,8 @@ export default () => {
   return (
     <>
       <div className="flex flex-col font-mono h-screen overflow-hidden relative">
+
+        {/* Topbar */}
         <div className="max-h-[5%] flex bg-gradient-to-r from-red-600  to-white p-3 px-5">
           <div className="flex-grow flex flex-row justify-center items-center  ">
             <img src="/logo.svg" alt="Logo" className="h-full " />{" "}
@@ -84,6 +85,8 @@ export default () => {
             {isActionsMenuHovered && <ActionsMenuDropDown />}
           </div>
         </div>
+
+        {/* Body */}
         <div className="flex-grow flex flex-row ">
           <div id="sidebar" className="bg-stone-100  ">
             <Sidebar currentMenuStateHandler={setSelectedView} />

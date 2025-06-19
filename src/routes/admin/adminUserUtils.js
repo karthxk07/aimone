@@ -1,5 +1,5 @@
 const express = require('express');
-const { UserModel } = require('../../mongo/config/schema');
+const { UserModel, FacultyModel } = require('../../mongo/config/schema');
 const { adminMiddleware } = require('../../middlewares/authMiddleware');
 const adminUserUtilRouter = express.Router();
 
@@ -33,6 +33,25 @@ adminUserUtilRouter.post("/setTimetableByRegNo" ,async (req,res)=>{
     res.status(200).end();
 })
 
+//return search query of faculties
+adminUserUtilRouter.get("/facultiesByEmpId",async(req,res)=>{
+    try{
+        const {search_query} = req.query;
 
+        //serach by emp id
+        const faculty_emp = await  FacultyModel.find({emp_id : {$regex : search_query}}).select("emp_id name");
+
+        //search by name
+        //case insensitive search 
+        const faculty_name = await FacultyModel.find({name: {$regex : search_query,$options : 'i'}}).select("emp_id name");
+
+        //concat both lists and send the response
+        
+        res.send([...faculty_emp, ...faculty_name]).end();
+
+    }catch(e){
+        res.status(400).send("some error occured "+e.message).end();
+    }
+})
 
 module.exports = adminUserUtilRouter ;

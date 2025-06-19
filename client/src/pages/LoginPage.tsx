@@ -1,5 +1,5 @@
 import axios from "axios";
-import Announcement from "../types/types";
+import {Announcement} from "../types/types";
 import ReactMarkdown from "react-markdown";
 import { FaBullseye } from "react-icons/fa";
 

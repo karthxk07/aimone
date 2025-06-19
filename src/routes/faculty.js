@@ -8,7 +8,9 @@ const {
 } = require("../mongo/config/schema");
 const facultyRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const { types } = require("util");
+const { adminMiddleware } = require("../middlewares/authMiddleware");
+
+
 
 //add a faculty
 facultyRouter.post("/login", async (req, res) => {
@@ -39,13 +41,13 @@ facultyRouter.post("/login", async (req, res) => {
       res.send("password incorrect").end();
     }
   } catch (e) {
-    res.send("error occurred" + e.message).end();
+    res.status(400).send("error occurred" + e.message).end();
   }
 });
 
 //signup a faculty
 //route to be removed and faculty add func to be added to the admin faculty route
-facultyRouter.post("/signup", async (req, res) => {
+facultyRouter.post("/signup",adminMiddleware, async (req, res) => {
   const { email, password, emp_id, name } = req.body;
 
   try {
@@ -59,7 +61,7 @@ facultyRouter.post("/signup", async (req, res) => {
 
     res.send("faculty creation successfull").end();
   } catch (e) {
-    res.send("some error occured" + e.message).end();
+    res.status(400).send("some error occured" + e.message).end();
   }
 });
 
@@ -88,7 +90,7 @@ facultyRouter.get("/participants", async (req, res) => {
     //return all the participants
     res.send(course.participants).end();
   } catch (e) {
-    res.send("some error occured" + e.message).end();
+    res.status(400).send("some error occured" + e.message).end();
   }
 });
 
@@ -141,7 +143,7 @@ facultyRouter.post("/mark", async (req, res) => {
 
     res.send("mark added successfully").end();
   } catch (e) {
-    res.send("some error occured : " + e.message).end();
+    res.status(400).send("some error occured : " + e.message).end();
   }
 });
 

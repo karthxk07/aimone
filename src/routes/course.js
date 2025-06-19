@@ -22,13 +22,11 @@ const jwt = require('jsonwebtoken')
 courseRouter.post("/add", async (req, res) => {
   try {
     //get the course no, course title and the faculty name
-    const { course_no, course_title, emp_id, slot } = req.body;
+    const { course_no, course_title, emp_id, slot, class_no} = req.body;
 
     //find faculty from the emp id
     const faculty = await FacultyModel.findOne({ emp_id: emp_id });
-
-    //generate a class number
-    const class_no = "CH" + Date.now().toString(); //timestamp
+    if(!faculty) return res.send("faculty not found").end();
 
     //make a new course with the following details
     const course = CourseModel({
@@ -42,7 +40,7 @@ courseRouter.post("/add", async (req, res) => {
 
     res.send("course added successfully").end();
   } catch (e) {
-    res.send(e.message).end();
+    res.status(400).send(e.message).end();
   }
 });
 
@@ -52,7 +50,7 @@ courseRouter.get("/allCourses", async (req, res) => {
     const courses = await CourseModel.find();
     res.send(courses).end();
   } catch (e) {
-    res.send("some error occured " + e.message).end();
+    res.status(400).send("some error occured " + e.message).end();
   }
 });
 
@@ -64,7 +62,7 @@ courseRouter.get("/getCourseByClassNo", async (req, res) => {
     const course = await CourseModel.findOne({ class_no: class_no });
     res.send(course).end();
   } catch (e) {
-    res.send("some error occured " + e.message).end();
+    res.status(400).send("some error occured " + e.message).end();
   }
 });
 
@@ -129,7 +127,7 @@ courseRouter.post("/addParticipants", async (req, res) => {
    
     res.send("participants added successfully"),end();
   } catch (e) {
-    res.send("some error ocurred" + e.message).end();
+    res.status(400).send("some error ocurred" + e.message).end();
   }
 });
 
@@ -141,7 +139,7 @@ courseRouter.get("/participants", async (req,res)=>{
 
     res.send(course.participants).end();
   }catch(e){
-    res.send("some error occured" + e.message).end();
+    res.status(400).send("some error occured" + e.message).end();
   }
 })
 //updating faculty in the course

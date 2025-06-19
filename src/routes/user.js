@@ -27,7 +27,7 @@ userRouter.get("/getUsersByDept", async (req, res) => {
     const users = await UserModel.find({ dept: dept });
     res.send(users).end();
   } catch (e) {
-    res.send("some error occured" + e.message).end();
+    res.status(400).send("some error occured" + e.message).end();
   }
 });
 
@@ -56,7 +56,7 @@ userRouter.get("/participants", async (req, res) => {
     //return all the participants
     res.send(course.participants).end();
   } catch (e) {
-    res.send("some error occured" + e.message).end();
+    res.status(400).send("some error occured" + e.message).end();
   }
 });
 

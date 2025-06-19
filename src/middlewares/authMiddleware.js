@@ -37,7 +37,7 @@ const adminMiddleware = async (req, res, next) => {
 
     isAdmin ? next() : res.send("not admin").end();
   } catch (e) {
-    res.send("not a faculty" + e.message).end();
+    res.status(400).send("not a faculty : " + e.message).end();
   }
 };
 
