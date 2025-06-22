@@ -9,13 +9,29 @@ interface Faculty {
   emp_id: string;
 }
 
+interface AddCourseFormData {
+  class_no: string;
+  course_title: string;
+  course_code: string;
+  faculty_id: string;
+  slot: string;
+}
+
 // page to add a  course
 export default () => {
   //states
   const [faculty_list, setFacultyList] = useState<[Faculty] | []>([]);
   const [facultySelectDropDown, setFacultySelectDropDown] =
     useState<boolean>(false);
-  //states for all form entries
+  const [addCourseFormData, setAddCourseFormData] = useState<AddCourseFormData>(
+    {
+      class_no: "",
+      course_title: "",
+      course_code: "",
+      faculty_id: "",
+      slot: "M1",
+    }
+  );
 
   //refs
   const class_no_ref = useRef<HTMLInputElement | null>(null);
@@ -26,6 +42,12 @@ export default () => {
     const class_no = "CH" + Date.now().toString(); //timestamp
 
     if (class_no_ref.current) class_no_ref.current.value = class_no;
+
+    //update form state
+    setAddCourseFormData((prevData) => ({
+      ...prevData,
+      class_no,
+    }));
   };
   useEffect(() => {
     gen_class_no();
@@ -35,6 +57,12 @@ export default () => {
   const handleFacultySearch = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    //update form state
+    setAddCourseFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
+
     const query = e.target.value;
 
     //if search query empty, return
@@ -52,20 +80,45 @@ export default () => {
       })
       .then((facultyList: unknown) => {
         setFacultyList(facultyList as [Faculty]);
+      }).catch((e)=>{
+        alert(e.message)
+        //todo : change alert with a toast
       });
-    // simulate dummy list
-    const dummy_list = [
-      { id: "123", emp_id: "123", name: "karthik" },
-      { id: "123", emp_id: "123", name: "karthik" },
-    ];
-    setFacultyList(dummy_list as [Faculty]);
+
   };
 
-
   //add course handler
-  const addCourseHandler = (e:React.FormEvent)=>{
+  const addCourseHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
     //get data from form entries state
-  }
+    //post request
+    axios
+      .post(
+        "http://localhost:3001/api/course/add",
+        {
+          addCourseFormData,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        alert(res);
+        //todo : change alert with a toast
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
+  };
+
+  // input change handler
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //change the state
+    const { name, value } = e.target;
+
+    setAddCourseFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -77,10 +130,10 @@ export default () => {
 
         <div className="flex-grow w-full flex justify-center ">
           <div className="bg-stone-100/70 rounded-xl p-5 h-fit">
-            <form className="flex flex-col" onSubmit={addCourseHandler}>
+            <form className="flex flex-col lg:grid grid-cols-1 gap-x-5" onSubmit={addCourseHandler}>
               {/* [*]-Completed []-Todo */}
               {/* Class no [*] */}
-              <div className="mb-4 flex justify-between items-center ">
+              <div className="mb-4 flex justify-between items-center col-span-2 ">
                 <label
                   htmlFor="class_no"
                   className="text-sm text-stone-800 mr-4 font-semibold"
@@ -92,7 +145,7 @@ export default () => {
                   id="class_no"
                   name="class_no"
                   disabled
-                  className="bg-stone-200 text-stone-500 text-sm rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0"
+                  className="bg-stone-200 text-stone-500 text-sm rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0 flex-grow text-center"
                   ref={class_no_ref}
                 />
               </div>
@@ -108,8 +161,9 @@ export default () => {
                   type="text"
                   id="course_title"
                   name="course_title"
-                  className="bg-white rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0"
+                  className="bg-white rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0 "
                   placeholder="enter a course name.."
+                  onChange={handleChange}
                 />
               </div>
               {/* Course Code [*]*/}
@@ -126,6 +180,7 @@ export default () => {
                   name="course_code"
                   className="bg-white rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0"
                   placeholder="enter the course code.."
+                  onChange={handleChange}
                 />
               </div>
               {/* Faculty Id [*]*/}
@@ -139,25 +194,36 @@ export default () => {
                 <div className="relative">
                   <input
                     type="text"
-                    id="course_title"
+                    id="faculty_id"
+                    name="faculty_id"
                     className="bg-white rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-1 outline-gray-100 "
                     placeholder="enter faculty id or name.."
                     // on focus show the list
                     onFocus={() => setFacultySelectDropDown(true)}
-                    onBlur={() => setFacultySelectDropDown(false)}
+                    onBlur={() =>
+                      setTimeout(() => setFacultySelectDropDown(false), 200)
+                    }
                     // on change update the list
                     onChange={handleFacultySearch}
+                    value={addCourseFormData.faculty_id}
                   />
                   {facultySelectDropDown && (
                     <ul className="absolute bg-white w-[90%] start-1/2 end-0 -translate-x-1/2  rounded-b-2xl overflow-hidden overflow-y-scroll">
-                      {faculty_list.map((faculty, idx) => {
+                      {faculty_list.map((faculty) => {
                         return (
                           <li
                             className="border-b-[0.5px] border-gray-200 p-2"
                             key={faculty.id}
-                            //update the form value on click
-                            //find a way to hold the id
-
+                            onClick={() => {
+                              //update the form value on click
+                              //find a way to hold the id
+                              console.log("click");
+                              setFacultySelectDropDown(false);
+                              setAddCourseFormData((prevData) => ({
+                                ...prevData,
+                                faculty_id: faculty.emp_id,
+                              }));
+                            }}
                           >
                             {faculty.emp_id}
                             {faculty.name}
@@ -178,21 +244,32 @@ export default () => {
                 </label>
                 <select
                   id="slot"
+                  name="slot"
                   className="bg-white rounded-2xl px-3 py-2 placeholder:text-sm focus:outline-0"
+                  value={addCourseFormData.slot}
+                  onChange={(e) => {
+                    const { name, value } = e.target;
+                    setAddCourseFormData((prevData) => ({
+                      ...prevData,
+                      [name]: value,
+                    }));
+                  }}
                 >
                   {(Object.keys(Slots) as Array<string>)
                     .filter((key) => Number.isNaN(+key))
                     .map((slot) => {
-                      console.log(typeof slot);
                       return <option>{slot}</option>;
                     })}
                 </select>
               </div>
-            
-          {/* submit */}
-          <input type="submit" value="Add course" className="bg-red-700 mx-auto p-2 rounded-md text-white w-fit" />
-            </form>
 
+              {/* submit */}
+              <input
+                type="submit"
+                value="Add course"
+                className="bg-red-700 mx-auto my-2 p-2 rounded-md text-white w-fit col-span-2"
+              />
+            </form>
           </div>
         </div>
       </div>

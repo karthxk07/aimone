@@ -47,7 +47,7 @@ export default ({ setSelectedView }: { setSelectedView: any }) => {
                   >
                     {subItem.itemIcon}
                     &nbsp;&nbsp;
-                    <p>{subItem.itemName}</p>
+                    <p >{subItem.itemName}</p>
                   </li>
                 ))}
               </ul>

@@ -50,7 +50,7 @@ export default ({
                 >
                   {item.itemIcon}
                   &nbsp;&nbsp;
-                  <p>{item.itemName}</p>
+                  <p >{item.itemName}</p>
                 </li>
               );
             })}
