@@ -1,4 +1,4 @@
-import { FaTable, FaBook, FaPlus } from "react-icons/fa";
+import { FaTable, FaBook, FaPlus, FaUser } from "react-icons/fa";
 import { AdminMenuItems } from "../../enums";
 
 const AdminMenuItemsList = [
@@ -16,6 +16,11 @@ const AdminMenuItemsList = [
         itemName: "Add Course",
         itemKey: AdminMenuItems.ADD_COURSE,
       },
+      {
+        itemIcon: <FaUser />,
+        itemName: "Add Participants",
+        itemKey: AdminMenuItems.ADD_PARTICIPANTS,
+      },
     ],
   },
 ];
@@ -29,8 +34,15 @@ export default ({ setSelectedView }: { setSelectedView: any }) => {
     <div className="m-5 font-sans">
       <ul>
         {AdminMenuItemsList.map((item, idx) => (
-          <li key={idx}>
-            <div className="cursor-default flex flex-row items-center bg-stone-200 rounded-2xl p-1 px-5 my-4 text-stone-700">
+          <li
+            key={idx}
+            onClick={() => {
+              if ( item.subItems==undefined && item.itemKey!=undefined ) {
+                menuItemClickHandler(item.itemKey);
+              }
+            }}
+          >
+            <div className="cursor-default flex flex-row items-center bg-stone-200 rounded-2xl p-1 px-5 my-4 text-stone-800">
               {item.itemIcon}
               &nbsp;&nbsp;
               <p>{item.itemName}</p>
@@ -42,12 +54,12 @@ export default ({ setSelectedView }: { setSelectedView: any }) => {
                 {item.subItems.map((subItem, subIdx) => (
                   <li
                     key={`${idx}-${subIdx}`}
-                    className="cursor-pointer flex flex-row items-center bg-stone-200 rounded-2xl p-1 px-5 my-2 hover:bg-stone-300 text-stone-600"
+                    className="cursor-pointer flex flex-row items-center bg-stone-200 rounded-2xl p-1 px-5 my-2 hover:bg-stone-300 text-stone-700"
                     onClick={() => menuItemClickHandler(subItem.itemKey)}
                   >
                     {subItem.itemIcon}
                     &nbsp;&nbsp;
-                    <p >{subItem.itemName}</p>
+                    <p>{subItem.itemName}</p>
                   </li>
                 ))}
               </ul>

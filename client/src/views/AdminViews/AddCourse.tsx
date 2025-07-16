@@ -130,7 +130,7 @@ export default () => {
 
         <div className="flex-grow w-full flex justify-center ">
           <div className="bg-stone-100/70 rounded-xl p-5 h-fit">
-            <form className="flex flex-col lg:grid grid-cols-1 gap-x-5" onSubmit={addCourseHandler}>
+            <form className="flex flex-col lg:grid grid-cols-2 gap-x-5" onSubmit={addCourseHandler}>
               {/* [*]-Completed []-Todo */}
               {/* Class no [*] */}
               <div className="mb-4 flex justify-between items-center col-span-2 ">

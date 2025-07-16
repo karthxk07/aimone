@@ -4,21 +4,17 @@ import UpdateTimetable from "../views/AdminViews/UpdateTimetable";
 import { AdminMenuItems } from "../enums";
 import AddCourse from "../views/AdminViews/AddCourse";
 import { FaUser } from "react-icons/fa";
+import AddParticipants from "../views/AdminViews/AddParticipants";
 
-const ActionsMenuDropDown  = () : React.ReactNode=>{
- return(
-  <>
-  
-  </>
- )
-}
-
+const ActionsMenuDropDown = (): React.ReactNode => {
+  return <></>;
+};
 
 export default () => {
   const [selectedView, setSelectedView] = useState<AdminMenuItems>(
     AdminMenuItems.UPDATE_TIMETABLE
   );
-  const [isActionsMenuHovered,setActionsMenuHovered] = useState<boolean>();
+  const [isActionsMenuHovered, setActionsMenuHovered] = useState<boolean>();
 
   const renderView = (): React.ReactNode => {
     switch (selectedView) {
@@ -26,6 +22,8 @@ export default () => {
         return <UpdateTimetable />;
       case AdminMenuItems.ADD_COURSE:
         return <AddCourse />;
+      case AdminMenuItems.ADD_PARTICIPANTS:
+        return <AddParticipants />;
     }
   };
 
@@ -49,7 +47,7 @@ export default () => {
               setActionsMenuHovered(false);
             }}
           >
-            <FaUser/>
+            <FaUser />
             {isActionsMenuHovered && <ActionsMenuDropDown />}
           </div>
         </div>

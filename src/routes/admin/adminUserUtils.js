@@ -12,6 +12,21 @@ adminUserUtilRouter.get("/findUsersByRegNo" , async (req,res)=>{
     res.send(users);
 })
 
+//getting students by dept and year filter 
+adminUserUtilRouter.get("findUsersByFilter", async (req,res)=>{
+    try{
+        const {dept, year} = req.query;
+
+        //find users 
+        const users = await UserModel.find({dept:dept, year:year}).select("regno name dept year");// only return regno name year and dept 
+
+        //send the user list
+        res.send(users).end();
+    }catch(e){
+        res.status(400).send("some error occurred : " + e.messgae).end();
+    }
+})
+
 adminUserUtilRouter.get("/getTimetableByRegNo" , async (req,res)=>{
     const {regno} = req.query;
 

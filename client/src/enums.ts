@@ -1,6 +1,7 @@
 export enum AdminMenuItems{
     UPDATE_TIMETABLE,
-    ADD_COURSE
+    ADD_COURSE,
+    ADD_PARTICIPANTS
 }
 
 export enum MenuItems {

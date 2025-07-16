@@ -54,17 +54,35 @@ courseRouter.get("/allCourses", async (req, res) => {
   }
 });
 
-//find course by class no
-courseRouter.get("/getCourseByClassNo", async (req, res) => {
+//find courses by class no
+courseRouter.get("/searchCoursesByClassNo", async (req, res) => {
   const { class_no } = req.params;
 
   try {
-    const course = await CourseModel.findOne({ class_no: class_no });
+    const course = await CourseModel.findOne({ class_no: {$regx : class_no} }).select("class_no");
     res.send(course).end();
   } catch (e) {
     res.status(400).send("some error occured " + e.message).end();
   }
 });
+
+//get details of a course by the class no
+courseRouter.get("/getCourseInfo", async (req,res)=>{
+  try{
+    const {class_no} = req.params;
+    if(!class_no)res.status(400).send("class no not given").end();
+
+    const course = await CourseModel.findOne({class_no});
+    if(!course) res.status(400).send("course not found").end();
+
+    //send the course no successfully
+    res.send(course).end();
+    }catch(e){
+      res.status(400).send("some error occurred : " + e.message).end();
+    }
+
+})
+
 
 //adding participants in the course
 // select participant using the dept -> user list sent in the request
